@@ -2,12 +2,12 @@ from PyQt5 import QtWidgets, uic
 from PyQt5.QtGui import QPainter, QColor, QPolygon
 import sys
 from random import randint
+from gui import Ui_MainWindow
 
-class Ui(QtWidgets.QMainWindow):
+class MyWidget(QtWidgets.QMainWindow, Ui_MainWindow):
     def __init__(self):
-        super(Ui, self).__init__()
-        uic.loadUi('ui.ui', self) 
-        self.show()
+        super().__init__()
+        self.setupUi(self)
         self.pushButton.clicked.connect(self.pushed)
         self.counter = 0
 
@@ -15,7 +15,7 @@ class Ui(QtWidgets.QMainWindow):
         qp = QPainter()
         qp.begin(self)
         if self.counter > 0:
-            qp.setBrush(QColor(255, 255, 0))
+            qp.setBrush(QColor(randint(0, 255), randint(0, 255), randint(0, 255)))
             x, y, r = randint(50, 300), randint(50, 300), randint(50, 300)
             qp.drawEllipse(x, y, r, r)
         qp.end()
@@ -24,6 +24,9 @@ class Ui(QtWidgets.QMainWindow):
         self.counter += 1
         self.repaint()
 
-app = QtWidgets.QApplication(sys.argv)
-window = Ui()
-app.exec_() 
+
+if __name__ == '__main__':
+    app = QtWidgets.QApplication(sys.argv)
+    ex = MyWidget()
+    ex.show()
+    sys.exit(app.exec_())
